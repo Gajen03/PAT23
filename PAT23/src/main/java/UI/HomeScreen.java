@@ -31,7 +31,7 @@ public class HomeScreen extends javax.swing.JFrame {
      */
     public HomeScreen() throws ClassNotFoundException, SQLException  {
         initComponents();
-            try {
+            try{
                 
                 TGSBoys.setText(StatsManager.getTopGoalScorer("M"));
                 TGSGirls.setText(StatsManager.getTopGoalScorer("F"));
