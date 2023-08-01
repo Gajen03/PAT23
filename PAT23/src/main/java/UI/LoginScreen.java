@@ -5,6 +5,7 @@
 package UI;
 
 import DBBackend.DB;
+import backend.UserManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -167,12 +168,32 @@ public class LoginScreen extends javax.swing.JFrame {
     private void signInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInButtonActionPerformed
 
 
-        
+        try {
+            String username = userNameField.getText();
+            String password = PasswordField.getText();
+            boolean check = UserManager.checkLogin(username, password);
+            if(check){
+                HomeScreen Info = new HomeScreen();
+                Info.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Incorrect username/password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
 
     }//GEN-LAST:event_signInButtonActionPerformed
 
     private void createAccountButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountButtonActionPerformed
-        
+        CreateLogin Info = null;
+        Info = new CreateLogin(); //show error on screen
+        Info.setVisible(true);
+        dispose(); 
     }//GEN-LAST:event_createAccountButtonActionPerformed
 
     /**
@@ -200,6 +221,8 @@ public class LoginScreen extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LoginScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
