@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author ADMIN
  */
-public class UserManager {
+public class UserManagerBE {
     
      public static void addUser(String username,String password) throws SQLException, ClassNotFoundException{
         DB database = new DB();
@@ -21,7 +21,7 @@ public class UserManager {
     }
     public static boolean checkLogin(String username, String password) throws SQLException, ClassNotFoundException{
         DB database = new DB();
-        ResultSet getUsernameAndPassword = database.query("SELECT COUNT(*) FROM Users WHERE usernames = '"+username+"' AND password = '"+password+"';");
+        ResultSet getUsernameAndPassword = database.query("SELECT COUNT(*) FROM Users WHERE Users.usernames = '"+username+"' AND Users.password = '"+password+"';");
         getUsernameAndPassword.next();
         int check = getUsernameAndPassword.getInt(1);
         

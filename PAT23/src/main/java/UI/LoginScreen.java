@@ -5,7 +5,7 @@
 package UI;
 
 import DBBackend.DB;
-import backend.UserManager;
+import backend.UserManagerBE;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -173,7 +173,7 @@ public class LoginScreen extends javax.swing.JFrame {
         try {
             String username = userNameField.getText();
             String password = PasswordField.getText();
-            boolean check = UserManager.checkLogin(username, password);
+            boolean check = UserManagerBE.checkLogin(username, password);
             if(check){
                 HomeScreen Info = new HomeScreen();
                 Info.setVisible(true);

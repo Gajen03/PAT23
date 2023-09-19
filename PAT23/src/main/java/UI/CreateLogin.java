@@ -6,7 +6,7 @@
 package UI;
 
 import DBBackend.DB;
-import backend.UserManager;
+import backend.UserManagerBE;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -158,7 +158,7 @@ public class CreateLogin extends javax.swing.JFrame {
             String username = usernameField.getText();
             String password = passwordfield.getText();
             
-            UserManager.addUser(username, password);
+            UserManagerBE.addUser(username, password);
             newLOgin.setText("ACCOUNT CREATED\n");
 // TODO add your handling code here:
         } catch (ClassNotFoundException ex) {
