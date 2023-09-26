@@ -4,6 +4,17 @@
  */
 package UI;
 
+import DBBackend.DB;
+import backend.PlayerManagerBE;
+import backend.TeamManagerBE;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author ADMIN
@@ -13,8 +24,44 @@ public class ManageTeams extends javax.swing.JFrame {
     /**
      * Creates new form ManageTeams
      */
-    public ManageTeams() {
-        initComponents();
+    public ManageTeams() throws SQLException, ClassNotFoundException {
+        try {
+            initComponents();
+            
+            DefaultComboBoxModel comboMod = new DefaultComboBoxModel(TeamManagerBE.getRHBTeamNames().toArray());
+            teamCombo.setModel(comboMod);
+            updateListCurrentAvaPlayers();
+            updateListCurrentTeam();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+      private void updateListCurrentAvaPlayers() throws SQLException, ClassNotFoundException{
+    
+                String teamName = (String)teamCombo.getSelectedItem();
+                String teamIDStr = TeamManagerBE.getTeamID(teamName);
+                char teamID = teamIDStr.charAt(1);
+                DefaultListModel<String> list = new DefaultListModel();
+                String [] names = PlayerManagerBE.getAvaliblePlayers(teamID);
+                for (int i = 0; i < names.length; i++) {
+                    list.addElement(names[i]);
+                    
+                }
+                AvaliblePlayersList.setModel(list);
+    }
+       private void updateListCurrentTeam() throws SQLException, ClassNotFoundException{
+    
+                String teamName = (String)teamCombo.getSelectedItem();
+                String teamIDStr = TeamManagerBE.getTeamID(teamName);
+                char teamID = teamIDStr.charAt(1);
+                DefaultListModel<String> list = new DefaultListModel();
+                String [] names = TeamManagerBE.getTeamPlayerName(teamID);
+                for (int i = 0; i < names.length; i++) {
+                    list.addElement(names[i]);
+                    
+                }
+                TeamPlayerList.setModel(list);
     }
 
     /**
@@ -28,31 +75,25 @@ public class ManageTeams extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        teamCombo = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        AvaliblePlayersList = new javax.swing.JList<>();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        TeamPlayerList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 51));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Manage Teams");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        teamCombo.setForeground(new java.awt.Color(255, 255, 255));
+        teamCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setBackground(new java.awt.Color(0, 51, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -66,13 +107,41 @@ public class ManageTeams extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(0, 51, 102));
         jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ADMIN\\Documents\\NetBeansProjects\\PAT23\\PAT23\\src\\main\\images\\pngwing.com (1) flip.png")); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Back");
+
+        AvaliblePlayersList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(AvaliblePlayersList);
+
+        TeamPlayerList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane4.setViewportView(TeamPlayerList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(64, 64, 64)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -82,21 +151,13 @@ public class ManageTeams extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(68, 68, 68)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(teamCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(262, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(64, 64, 64)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(68, 68, 68)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(419, Short.MAX_VALUE)))
+                    .addGap(78, 78, 78)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(414, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,24 +169,24 @@ public class ManageTeams extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton3)))
-                .addGap(17, 17, 17)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(teamCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(108, 108, 108)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(106, 106, 106)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(107, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(137, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(28, 28, 28)))
+                    .addContainerGap(145, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(20, 20, 20)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -148,7 +209,65 @@ public class ManageTeams extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+            String teamName = (String)teamCombo.getSelectedItem();
+            String teamID= TeamManagerBE.getTeamID(teamName).replace("#", "");
+            String fullname = TeamPlayerList.getSelectedValue();
+            Scanner sc = new Scanner(fullname);
+            String name ="";
+            String surname ="";
+            String gender = "";
+            while(sc.hasNext()){
+                name = sc.next();
+                surname = sc.next();
+            }
+            
+            DB database = new DB();
+            ResultSet getPlayerID = database.query("SELECT Players.PlayerID FROM Players WHERE Players.Name = '"+name+"' and Players.Surname = '"+surname+"' ;");
+            String playerID = DB.toString(getPlayerID).replace("#", "");
+            
+            
+            
+           TeamManagerBE.deletePlayerFromTeam(playerID, teamID);
+updateListCurrentAvaPlayers();
+            updateListCurrentTeam();
+// TODO add your handling code here:
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+             String teamName = (String)teamCombo.getSelectedItem();
+            String teamID= TeamManagerBE.getTeamID(teamName).replace("#", "");
+            String fullname = AvaliblePlayersList.getSelectedValue();
+            Scanner sc = new Scanner(fullname);
+            String name ="";
+            String surname ="";
+            while(sc.hasNext()){
+                name = sc.next();
+                surname = sc.next();
+            }
+            
+            DB database = new DB();
+            ResultSet getPlayerID = database.query("SELECT Players.PlayerID FROM Players WHERE Players.Name = '"+name+"' and Players.Surname = '"+surname+"' ;");
+            String playerID = DB.toString(getPlayerID).replace("#", "");
+            
+            
+            TeamManagerBE.addPlayerToTeam(playerID, teamID);
+updateListCurrentAvaPlayers();
+            updateListCurrentTeam();
+// TODO add your handling code here:
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,21 +299,27 @@ public class ManageTeams extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManageTeams().setVisible(true);
+                try {
+                    new ManageTeams().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> AvaliblePlayersList;
+    private javax.swing.JList<String> TeamPlayerList;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JComboBox<String> teamCombo;
     // End of variables declaration//GEN-END:variables
 }

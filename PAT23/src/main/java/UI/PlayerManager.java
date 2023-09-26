@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -19,9 +21,21 @@ public class PlayerManager extends javax.swing.JFrame {
     /**
      * Creates new form PlayerManager
      */
-    public PlayerManager() {
+    public PlayerManager() throws SQLException, ClassNotFoundException {
         initComponents();
+        updatePlayers();
     }
+    
+    private void updatePlayers() throws SQLException, ClassNotFoundException{
+         String [] names = PlayerManagerBE.getAllPlayers();
+        DefaultListModel model = new DefaultListModel();
+        for (int i = 0; i < names.length; i++) {
+            model.addElement(names[i]);
+            
+        }
+        
+        PlayerList.setModel(model);
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,11 +63,12 @@ public class PlayerManager extends javax.swing.JFrame {
         nameField = new javax.swing.JTextField();
         SurnameField = new javax.swing.JTextField();
         kitNumSpinner = new javax.swing.JComboBox<>();
-        ageSpinner = new javax.swing.JComboBox<>();
+        ageCombo = new javax.swing.JComboBox<>();
         posSpinner = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        outputMessage = new javax.swing.JLabel();
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -85,6 +100,7 @@ public class PlayerManager extends javax.swing.JFrame {
         jScrollPane1.setViewportView(PlayerList);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Player Manager");
 
         jLabel7.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
@@ -106,6 +122,17 @@ public class PlayerManager extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Kit number");
+
+        kitNumSpinner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6" }));
+
+        ageCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "13", "14", "15", "16", "17", "18" }));
+        ageCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ageComboActionPerformed(evt);
+            }
+        });
+
+        posSpinner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ST", "CM", "GK", "CB" }));
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -134,6 +161,10 @@ public class PlayerManager extends javax.swing.JFrame {
             }
         });
 
+        outputMessage.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        outputMessage.setForeground(new java.awt.Color(0, 204, 51));
+        outputMessage.setText(" ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,26 +174,31 @@ public class PlayerManager extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(108, 108, 108)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel12))
-                                .addGap(77, 77, 77)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(kitNumSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(SurnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ageSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(posSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jButton1)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel10)
+                                            .addComponent(jLabel11)
+                                            .addComponent(jLabel12))
+                                        .addGap(77, 77, 77)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(kitNumSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(SurnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(posSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jButton1)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(192, 192, 192)
+                                .addComponent(outputMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton3)
-                        .addGap(140, 140, 140)
+                        .addGap(185, 185, 185)
                         .addComponent(jLabel1)))
                 .addContainerGap(44, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +231,7 @@ public class PlayerManager extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(ageSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(ageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
@@ -204,7 +240,9 @@ public class PlayerManager extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(kitNumSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addComponent(outputMessage)
+                        .addGap(43, 43, 43)
                         .addComponent(jButton1)
                         .addGap(43, 43, 43))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,11 +276,13 @@ public class PlayerManager extends javax.swing.JFrame {
             
             String name = nameField.getText();
             String surname = SurnameField.getText();
-            int age = (int)ageSpinner.getSelectedItem();
+            String age = (String)ageCombo.getSelectedItem();
             String position = (String)posSpinner.getSelectedItem();
-            int kitNum = (int)kitNumSpinner.getSelectedItem();
+            String kitNum = (String)kitNumSpinner.getSelectedItem();
             
             PlayerManagerBE.addPlayer(name, surname, age, kitNum, position);
+            outputMessage.setText("PLAYER ADDED");
+            updatePlayers();
         } catch (SQLException ex) {
             Logger.getLogger(PlayerManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -253,7 +293,7 @@ public class PlayerManager extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
-   
+   try {
             String fullname = PlayerList.getSelectedValue();
             Scanner sc = new Scanner(fullname);
             String name ="";
@@ -263,7 +303,42 @@ public class PlayerManager extends javax.swing.JFrame {
                 surname = sc.next();
             }
             
+            
+            PlayerManagerBE.removePlayer(PlayerManagerBE.getPlayerID(name, surname));
+            outputMessage.setText("PLAYER REMOVED");
+            updatePlayers();
+            
+        String [] names = PlayerManagerBE.getAllPlayers();
+        DefaultListModel model = new DefaultListModel();
+        for (int i = 0; i < names.length; i++) {
+            model.addElement(names[i]);
+            
+        }
+        
+        PlayerList.setModel(model);
+//                String player = PlayerList.getSelectedValue();
+//        String index = player.
+//        String name = player.substring(0, WIDTH);
+//        String surname = player.substring(player.length()-1,' ');
+//        System.out.println("");
+// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(PlayerManagerBE.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PlayerManagerBE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void ageComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ageComboActionPerformed
+//
+//        int[] ageArr = {13,14,15,16,17,18};
+//        DefaultComboBoxModel model = new DefaultComboBoxModel();
+//        ageCombo.setModel(model);
+      
+        
+                        // TODO add your handling code here:
+    }//GEN-LAST:event_ageComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,7 +370,13 @@ public class PlayerManager extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlayerManager().setVisible(true);
+                try {
+                    new PlayerManager().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlayerManager.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(PlayerManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -303,7 +384,7 @@ public class PlayerManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> PlayerList;
     private javax.swing.JTextField SurnameField;
-    private javax.swing.JComboBox<String> ageSpinner;
+    private javax.swing.JComboBox<String> ageCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -322,6 +403,7 @@ public class PlayerManager extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> kitNumSpinner;
     private javax.swing.JTextField nameField;
+    private javax.swing.JLabel outputMessage;
     private javax.swing.JComboBox<String> posSpinner;
     // End of variables declaration//GEN-END:variables
 }
