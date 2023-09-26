@@ -16,12 +16,12 @@ public class UserManagerBE {
     
      public static void addUser(String username,String password) throws SQLException, ClassNotFoundException{
         DB database = new DB();
-        database.update("INSERT INTO Users(usernames,password) VALUES ('"+username+"', '"+password+"');");
+        database.update("INSERT INTO Users(username,password) VALUES ('"+username+"', '"+password+"');");
    
     }
     public static boolean checkLogin(String username, String password) throws SQLException, ClassNotFoundException{
         DB database = new DB();
-        ResultSet getUsernameAndPassword = database.query("SELECT COUNT(*) FROM Users WHERE Users.usernames = '"+username+"' AND Users.password = '"+password+"';");
+        ResultSet getUsernameAndPassword = database.query("SELECT COUNT(*) FROM Users WHERE Users.username = '"+username+"' AND Users.password = '"+password+"';");
         getUsernameAndPassword.next();
         int check = getUsernameAndPassword.getInt(1);
         

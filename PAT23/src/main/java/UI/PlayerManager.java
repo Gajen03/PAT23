@@ -27,35 +27,41 @@ public class PlayerManager extends javax.swing.JFrame {
     public PlayerManager() throws SQLException, ClassNotFoundException {
         initComponents();
         updatePlayers();
+
+        // fills position combo
+        String[] positions = {"ST", "GK", "CB", "CM"};
+        DefaultComboBoxModel posmodel = new DefaultComboBoxModel();
+        for (int i = 0; i < positions.length; i++) {
+            posmodel.addElement(positions[i]);
+        }
+        posCombo.setModel(posmodel);
+
+        // fills age combo
+        String[] age = {"13", "14", "15", "16", "17", "18", "19"};
+        DefaultComboBoxModel agemodel = new DefaultComboBoxModel();
+        for (int i = 0; i < age.length; i++) {
+            agemodel.addElement(age[i]);
+        }
+        ageCombo.setModel(agemodel);
+
+        // fills kitnumber combo
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (int i = 0; i < PlayerManagerBE.getAllPlayers().length; i++) {
+            model.addElement(i);
+        }
+        kitNumCombo.setModel(model);
     }
-    
-    private void updatePlayers() throws SQLException, ClassNotFoundException{
-         String [] names = PlayerManagerBE.getAllPlayers();
+
+    private void updatePlayers() throws SQLException, ClassNotFoundException {
+        String[] names = PlayerManagerBE.getAllPlayers();
         DefaultListModel model = new DefaultListModel();
         for (int i = 0; i < names.length; i++) {
             model.addElement(names[i]);
-            
+
         }
-        
+
         PlayerList.setModel(model);
-     }
-    
-    
-//    public static ArrayList<String> getRHBTeamNames() throws SQLException, ClassNotFoundException{
-//         DB database = new DB();
-//    
-//        String[] positions = {"ST","GK","CB","CM"};
-//        ResultSet getTeamNames = database.query("SELECT Teams.Name  FROM Teams WHERE Teams.School = 'Reddam House Ballito';");
-//        ArrayList<String> output = new ArrayList<>();
-//
-//        while (getTeamNames.next()) {
-//            output.add(getTeamNames.getString("Name"));
-//        }
-//      
-//        
-//        return output;
-//    }
-    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,9 +88,9 @@ public class PlayerManager extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         SurnameField = new javax.swing.JTextField();
-        kitNumSpinner = new javax.swing.JComboBox<>();
+        kitNumCombo = new javax.swing.JComboBox<>();
         ageCombo = new javax.swing.JComboBox<>();
-        posSpinner = new javax.swing.JComboBox<>();
+        posCombo = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -143,16 +149,24 @@ public class PlayerManager extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Kit number");
 
-        kitNumSpinner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6" }));
+        kitNumCombo.setBackground(new java.awt.Color(0, 0, 51));
+        kitNumCombo.setForeground(new java.awt.Color(255, 255, 255));
+        kitNumCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kitNumComboActionPerformed(evt);
+            }
+        });
 
-        ageCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "13", "14", "15", "16", "17", "18" }));
+        ageCombo.setBackground(new java.awt.Color(0, 0, 51));
+        ageCombo.setForeground(new java.awt.Color(255, 255, 255));
         ageCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ageComboActionPerformed(evt);
             }
         });
 
-        posSpinner.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ST", "CM", "GK", "CB" }));
+        posCombo.setBackground(new java.awt.Color(0, 0, 51));
+        posCombo.setForeground(new java.awt.Color(255, 255, 255));
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -197,7 +211,7 @@ public class PlayerManager extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(108, 108, 108)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel7)
@@ -207,12 +221,16 @@ public class PlayerManager extends javax.swing.JFrame {
                                             .addComponent(jLabel12))
                                         .addGap(77, 77, 77)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(kitNumSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(kitNumCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(SurnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(ageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(posSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jButton1)))
+                                            .addComponent(posCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton2)
+                                        .addGap(51, 51, 51))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(192, 192, 192)
                                 .addComponent(outputMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -221,11 +239,6 @@ public class PlayerManager extends javax.swing.JFrame {
                         .addGap(185, 185, 185)
                         .addComponent(jLabel1)))
                 .addContainerGap(44, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(494, Short.MAX_VALUE)
-                    .addComponent(jButton2)
-                    .addGap(121, 121, 121)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,21 +268,18 @@ public class PlayerManager extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(posSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(posCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(kitNumSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(kitNumCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                         .addComponent(outputMessage)
                         .addGap(43, 43, 43)
-                        .addComponent(jButton1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
                         .addGap(43, 43, 43))))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(452, Short.MAX_VALUE)
-                    .addComponent(jButton2)
-                    .addGap(48, 48, 48)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -288,18 +298,22 @@ public class PlayerManager extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        HomeScreen Info = new HomeScreen();
+        Info.setVisible(true);
+        dispose();
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             // TODO add your handling code here:
-            
+
             String name = nameField.getText();
             String surname = SurnameField.getText();
-            String age = (String)ageCombo.getSelectedItem();
-            String position = (String)posSpinner.getSelectedItem();
-            String kitNum = (String)kitNumSpinner.getSelectedItem();
-            
+            String age = (String) ageCombo.getSelectedItem();
+            String position = (String) posCombo.getSelectedItem();
+            String kitNum = (String) kitNumCombo.getSelectedItem();
+
             PlayerManagerBE.addPlayer(name, surname, age, kitNum, position);
             outputMessage.setText("PLAYER ADDED");
             updatePlayers();
@@ -312,30 +326,29 @@ public class PlayerManager extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-   try {
+
+        try {
             String fullname = PlayerList.getSelectedValue();
             Scanner sc = new Scanner(fullname);
-            String name ="";
-            String surname ="";
-            while(sc.hasNext()){
+            String name = "";
+            String surname = "";
+            while (sc.hasNext()) {
                 name = sc.next();
                 surname = sc.next();
             }
-            
-            
+
             PlayerManagerBE.removePlayer(PlayerManagerBE.getPlayerID(name, surname));
             outputMessage.setText("PLAYER REMOVED");
             updatePlayers();
-            
-        String [] names = PlayerManagerBE.getAllPlayers();
-        DefaultListModel model = new DefaultListModel();
-        for (int i = 0; i < names.length; i++) {
-            model.addElement(names[i]);
-            
-        }
-        
-        PlayerList.setModel(model);
+
+            String[] names = PlayerManagerBE.getAllPlayers();
+            DefaultListModel model = new DefaultListModel();
+            for (int i = 0; i < names.length; i++) {
+                model.addElement(names[i]);
+
+            }
+
+            PlayerList.setModel(model);
 //                String player = PlayerList.getSelectedValue();
 //        String index = player.
 //        String name = player.substring(0, WIDTH);
@@ -347,7 +360,7 @@ public class PlayerManager extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PlayerManagerBE.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ageComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ageComboActionPerformed
@@ -355,10 +368,13 @@ public class PlayerManager extends javax.swing.JFrame {
 //        int[] ageArr = {13,14,15,16,17,18};
 //        DefaultComboBoxModel model = new DefaultComboBoxModel();
 //        ageCombo.setModel(model);
-      
-        
-                        // TODO add your handling code here:
+
+        // TODO add your handling code here:
     }//GEN-LAST:event_ageComboActionPerformed
+
+    private void kitNumComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kitNumComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kitNumComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -421,9 +437,9 @@ public class PlayerManager extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox<String> kitNumSpinner;
+    private javax.swing.JComboBox<String> kitNumCombo;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel outputMessage;
-    private javax.swing.JComboBox<String> posSpinner;
+    private javax.swing.JComboBox<String> posCombo;
     // End of variables declaration//GEN-END:variables
 }

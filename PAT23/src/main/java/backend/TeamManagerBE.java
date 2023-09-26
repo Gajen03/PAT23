@@ -15,11 +15,13 @@ import java.util.ArrayList;
  */
 public class TeamManagerBE {
     
+    // adds team to data base
     public static void addTeam(String teamName,String schoolName,String coachName) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         database.update("INSERT INTO Teams(Name,School,Coach) VALUES ('"+teamName+"', '"+schoolName+"', '"+coachName+"');");
     }
     
+    // adds and removed players from teams they are assigned to
     public static void addPlayerToTeam(String PlayerID,String TeamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         database.update("INSERT INTO TeamPlayer(TeamID,PlayerID) VALUES ('"+TeamID+"','"+PlayerID+"');");
@@ -33,6 +35,7 @@ public class TeamManagerBE {
        
     }
 
+    // gets all the football teams that are apart of Reddam House Ballito
     public static ArrayList<String> getRHBTeamNames() throws SQLException, ClassNotFoundException{
          DB database = new DB();
     
@@ -47,12 +50,14 @@ public class TeamManagerBE {
         return output;
     }
     
-    
+    // gets team id
     public static String getTeamID(String teamName) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         ResultSet getTeamId = database.query("SELECT TeamID FROM Teams WHERE Teams.Name = '"+teamName+"' ;");
         return DB.toString(getTeamId);
     }
+    
+    // gets team anems and puts them into arrays
     public static String getTeamName(char teamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         ResultSet getTeamId = database.query("SELECT Teams.Name FROM Teams WHERE Teams.TeamID = '"+teamID+"' ;");
@@ -79,6 +84,7 @@ public class TeamManagerBE {
     }
     
     
+    // gets player info for table on home page
     public static String[][] getPlayersInfoForTeam(String teamName) throws SQLException, ClassNotFoundException {
         DB database = new DB();
         
@@ -101,7 +107,6 @@ public class TeamManagerBE {
         }
         return outputTable;
     }
-    
     public static String [] getPlayerInfoHeaders(){
         String [] headers = {"NAMES","SURNAMES","POSITION","KIT NUMBER"};
         return headers;

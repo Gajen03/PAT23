@@ -68,6 +68,8 @@ public class PlayerManagerBE {
        
        
     }
+    
+    // gets players stats that are needed
     public static String getPlayerGoals(String playerID) throws ClassNotFoundException, SQLException{
         DB databse = new DB();
         ResultSet getGoals = databse.query("SELECT SUM(Goals) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
@@ -120,6 +122,7 @@ public class PlayerManagerBE {
         
     }
     
+    // calc players ocr based of goals and asssistes,(maybe what team they in)
  public static String calcOVR(String playerID) throws ClassNotFoundException, SQLException{
         
        DB databse = new DB();
