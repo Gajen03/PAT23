@@ -4,8 +4,11 @@
  */
 package UI;
 
+import DBBackend.DB;
 import backend.PlayerManagerBE;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +39,23 @@ public class PlayerManager extends javax.swing.JFrame {
         
         PlayerList.setModel(model);
      }
+    
+    
+//    public static ArrayList<String> getRHBTeamNames() throws SQLException, ClassNotFoundException{
+//         DB database = new DB();
+//    
+//        String[] positions = {"ST","GK","CB","CM"};
+//        ResultSet getTeamNames = database.query("SELECT Teams.Name  FROM Teams WHERE Teams.School = 'Reddam House Ballito';");
+//        ArrayList<String> output = new ArrayList<>();
+//
+//        while (getTeamNames.next()) {
+//            output.add(getTeamNames.getString("Name"));
+//        }
+//      
+//        
+//        return output;
+//    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

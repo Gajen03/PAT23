@@ -58,7 +58,7 @@ public class TeamManagerBE {
         ResultSet getTeamId = database.query("SELECT Teams.Name FROM Teams WHERE Teams.TeamID = '"+teamID+"' ;");
         return DB.toString(getTeamId);
     }
-     public static String[] getTeamPlayerName(char teamID) throws ClassNotFoundException, SQLException{
+    public static String[] getTeamPlayerName(char teamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         ResultSet getCount = database.query("SELECT COUNT(*) FROM TeamPlayer,Players WHERE Players.PlayerID = TeamPlayer.PlayerID AND TeamPlayer.TeamID = '"+teamID+"' ;");
         getCount.next();
@@ -77,4 +77,38 @@ public class TeamManagerBE {
         
         return players;
     }
+    
+    
+    public static String[][] getPlayersInfoForTeam(String teamName) throws SQLException, ClassNotFoundException {
+        DB database = new DB();
+        
+
+        ResultSet countQueryTeamPlayer = database.query("SELECT COUNT(*) FROM Players, TeamPlayer, Teams WHERE (Teams.TeamID=TeamPlayer.TeamID AND TeamPlayer.PlayerID = Players.PlayerID) AND (Teams.Name = \'"+teamName+"\');");
+//        countQueryTeamPlayer.next();
+//        int numRows = countQueryTeamPlayer.getInt(1);
+
+
+        ResultSet dbData = database.query("SELECT Players.Name , Players.Surname ,Position,KitNumber FROM Players, TeamPlayer, Teams WHERE (Teams.TeamID=TeamPlayer.TeamID AND TeamPlayer.PlayerID = Players.PlayerID) AND (Teams.Name = \'"+teamName+"\');");
+        String[][] outputTable = new String[10000][5];
+        int count = 0;
+        while (dbData.next()) {
+            outputTable[count][0] = dbData.getString("Name");
+            outputTable[count][1] = dbData.getString("Surname");
+            outputTable[count][2] = dbData.getString("Position");
+            outputTable[count][3] = dbData.getString("KitNumber");
+
+            count++;
+        }
+        return outputTable;
+    }
+    
+    public static String [] getPlayerInfoHeaders(){
+        String [] headers = {"NAMES","SURNAMES","POSITION","KIT NUMBER"};
+        return headers;
+    }
+
+
+
+
+
 }

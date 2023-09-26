@@ -68,8 +68,77 @@ public class PlayerManagerBE {
        
        
     }
+    public static String getPlayerGoals(String playerID) throws ClassNotFoundException, SQLException{
+        DB databse = new DB();
+        ResultSet getGoals = databse.query("SELECT SUM(Goals) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
+      
+        if(getGoals.equals("")){
+            return "0";
+        }else{
+            return DB.toString(getGoals).replace("#", "");
+        }
+     
+        
+    }
     
-    // gets all players that are assocciated with a certain team selected
+    public static String getPlayerAssists(String playerID) throws ClassNotFoundException, SQLException{
+        DB databse = new DB();
+        ResultSet getAssists = databse.query("SELECT SUM(Assists) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
+      
+        if(getAssists.equals("")){
+            return "0";
+        }else{
+        return DB.toString(getAssists).replace("#", "");
+        }
+    }
+    
+    public static String getPosition(String playerID) throws ClassNotFoundException, SQLException{
+        DB databse = new DB();
+        ResultSet getPos = databse.query("SELECT Position FROM Players WHERE Players.PlayerID = '"+playerID+"'");
+        
+            
+        return DB.toString(getPos);
+        
+        
+    }
+    public static String getKitNum(String playerID) throws ClassNotFoundException, SQLException{
+        DB databse = new DB();
+        ResultSet getPos = databse.query("SELECT kitnumber FROM Players WHERE Players.PlayerID = '"+playerID+"'");
+        
+            
+        return DB.toString(getPos);
+        
+        
+    }
+    public static String getAge(String playerID) throws ClassNotFoundException, SQLException{
+        DB databse = new DB();
+        ResultSet getPos = databse.query("SELECT age FROM Players WHERE Players.PlayerID = '"+playerID+"'");
+        
+            
+        return DB.toString(getPos);
+        
+        
+    }
+    
+ public static String calcOVR(String playerID) throws ClassNotFoundException, SQLException{
+        
+       DB databse = new DB();
+      
+        ResultSet getOvr = databse.query("SELECT (SUM(Goals)+SUM(Assists)+70) FROM Stats WHERE Stats.PlayerID = '" + playerID + "';");
+
+        String ovr = DB.toString(getOvr).replace("\\n", "").replace("#", "");
+        if (ovr.contains("null")) {
+
+            return "70";
+        }else{
+            return DB.toString(getOvr);
+        }
+
+
+        
+    }
+
+// gets all players that are assocciated with a certain team selected
     public static String[] getTeamPlayers(String teamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         ResultSet rs = database.query("SELECT COUNT(*) FROM TeamPlayer,Players WHERE TeamPlayer.TeamID = '"+teamID+"' AND TeamPlayer.PlayerID = Players.PlayerID ;");
@@ -89,10 +158,6 @@ public class PlayerManagerBE {
         }
         return teamPlayers;
     }
-    
-    
-  
-   
     public static String[] getAvaliblePlayers(char teamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         

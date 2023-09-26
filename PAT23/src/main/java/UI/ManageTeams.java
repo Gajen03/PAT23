@@ -94,6 +94,11 @@ public class ManageTeams extends javax.swing.JFrame {
 
         teamCombo.setForeground(new java.awt.Color(255, 255, 255));
         teamCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        teamCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teamComboActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(0, 51, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -113,6 +118,7 @@ public class ManageTeams extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(0, 0, 51));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Back");
 
@@ -268,6 +274,18 @@ updateListCurrentAvaPlayers();
             Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void teamComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teamComboActionPerformed
+        try {
+            updateListCurrentAvaPlayers();
+            updateListCurrentTeam();
+// TODO add your handling code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageTeams.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_teamComboActionPerformed
 
     /**
      * @param args the command line arguments
