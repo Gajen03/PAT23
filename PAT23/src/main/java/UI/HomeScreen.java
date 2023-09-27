@@ -56,7 +56,7 @@ public class HomeScreen extends javax.swing.JFrame {
                 String teamIDStr = TeamManagerBE.getTeamID(teamName);
                 char teamID = teamIDStr.charAt(1);
                 DefaultListModel<String> list = new DefaultListModel();
-                String [] names = TeamManagerBE.getTeamPlayerName(teamID);
+                String [] names = TeamManagerBE.getTeamPlayerName(""+teamID);
                 for (int i = 0; i < names.length; i++) {
                     list.addElement(names[i]);
                     

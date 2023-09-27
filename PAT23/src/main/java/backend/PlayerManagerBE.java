@@ -164,7 +164,7 @@ public class PlayerManagerBE {
     public static String[] getAvaliblePlayers(char teamID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         
-        Scanner sc = new Scanner(Arrays.toString(TeamManagerBE.getTeamPlayerName(teamID))).useDelimiter(", ");
+        Scanner sc = new Scanner(Arrays.toString(TeamManagerBE.getTeamPlayerName(""+teamID))).useDelimiter(", ");
         String allFullnameStr = "";
         while(sc.hasNext()){
             allFullnameStr += sc.next().replace("[", "").replace("]", "")+"#";
