@@ -15,16 +15,17 @@ import java.util.Scanner;
  */
 public class GameManagerBE {
 
-    public static void addGame(String location, String RHbTeam, String OpponentTeam,int RhbTeamScore, int OpponentScore) throws ClassNotFoundException, SQLException {
+    public static void addGame(String location, String RHbTeam, String OpponentTeam,int RhbTeamScore, int OpponentScore, String Date) throws ClassNotFoundException, SQLException {
 
         DB database = new DB();
-        database.update("INSERT INTO Results(TeamA,TeamB,Location,TeamAGoals,TeamBGoals) VALUES('" + RHbTeam + "','" + OpponentTeam + "','"+ location + "','" + RhbTeamScore + "','"  + OpponentScore + "');");
+        database.update("INSERT INTO Results(TeamA,TeamB,Location,TeamAGoals,TeamBGoals,MatchDate) VALUES('" + RHbTeam + "','" + OpponentTeam + "','"+ location + "','" + RhbTeamScore + "','"  + OpponentScore + "','" + Date +"');");
 
     }
 
     public static void addGameGoals(String gameID, String playerFullName, int goals) throws ClassNotFoundException, SQLException {
 
-        Scanner sc = new Scanner(playerFullName).useDelimiter(" ");
+       if(!playerFullName.equalsIgnoreCase("")){
+           Scanner sc = new Scanner(playerFullName).useDelimiter(" ");
         String playerID = "";
         while (sc.hasNext()) {
             String name = sc.next();
@@ -34,9 +35,15 @@ public class GameManagerBE {
         DB database = new DB();
         database.update("INSERT INTO Stats(Stats.GameID,Stats.PlayerID,Goals) VALUES('" + gameID + "','" + playerID + "','" + goals + "');");
 
+       } else{
+           System.out.println("blank");
+       }
+        
     }
 
     public static void addGameAssists(String gameID, String playerFullName, int assists) throws ClassNotFoundException, SQLException {
+        
+        if(!playerFullName.equalsIgnoreCase("")){
         Scanner sc = new Scanner(playerFullName).useDelimiter(" ");
         String playerID = "";
         while (sc.hasNext()) {
@@ -46,18 +53,20 @@ public class GameManagerBE {
         }
         DB database = new DB();
         database.update("INSERT INTO Stats(Stats.GameID,Stats.PlayerID,Assists) VALUES('" + gameID + "','" + playerID + "','" + assists + "') ;");
-
+        }else{
+            System.out.println("blank");
+        }
     }
 
-    public static String getGameID(String location, String RHbTeam, String OpponentTeam, int OpponentScore,int RhbScore) throws ClassNotFoundException, SQLException {
+    public static String getGameID(String date) throws ClassNotFoundException, SQLException {
         DB database = new DB();
-        ResultSet getGameID = database.query("SELECT GameID FROM Results WHERE Location = " + location + " AND TeamA = " + RHbTeam + " AND TeamB = " + OpponentTeam + " AND TeamBGoals = " + OpponentScore + " AND TeamAGoals = " + RhbScore  +";");
-        return DB.toString(getGameID);
+        ResultSet getGameID = database.query("SELECT Results.GameID FROM Results WHERE MatchDate = '"+date+"' LIMIT 1;");
+        return DB.toString(getGameID).replace("#", "");
     }
     
     public static String getLocation(String gameID) throws ClassNotFoundException, SQLException{
         DB database = new DB();
-        ResultSet getLocation = database.query("SELECT Location FROM Game WHERE Game.GameID = '"+gameID+"' ;");
+        ResultSet getLocation = database.query("SELECT Location FROM Results WHERE Results.GameID = '"+gameID+"' ;");
         return DB.toString(getLocation).replace("#", "");
     }
 

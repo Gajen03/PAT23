@@ -24,6 +24,6 @@ public class test {
           System.out.println(teamName);
           
           String playerID = PlayerManagerBE.getPlayerID("Gajendra", "Naidoo");
-          System.out.println(playerID);
+          System.out.println( GameManagerBE.getGameID("8 Aug"));
     }
 }
