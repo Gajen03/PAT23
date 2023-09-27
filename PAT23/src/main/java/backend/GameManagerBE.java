@@ -54,4 +54,11 @@ public class GameManagerBE {
         ResultSet getGameID = database.query("SELECT GameID FROM Results WHERE Location = " + location + " AND TeamA = " + RHbTeam + " AND TeamB = " + OpponentTeam + " AND TeamBGoals = " + OpponentScore + " AND TeamAGoals = " + RhbScore  +";");
         return DB.toString(getGameID);
     }
+    
+    public static String getLocation(String gameID) throws ClassNotFoundException, SQLException{
+        DB database = new DB();
+        ResultSet getLocation = database.query("SELECT Location FROM Game WHERE Game.GameID = '"+gameID+"' ;");
+        return DB.toString(getLocation).replace("#", "");
+    }
+
 }
