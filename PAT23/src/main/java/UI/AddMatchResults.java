@@ -686,9 +686,9 @@ public class AddMatchResults extends javax.swing.JFrame {
             int teamAGoals = (int) TeamAGoals.getValue();
             int teamBGoals = (int) TeamBGoals.getValue();
 
-            GameManagerBE.addGame(location, teamB, teamB,teamAGoals, teamBGoals);
+            GameManagerBE.addGame(location, teamA, teamB,teamAGoals, teamBGoals);
 
-            String gameID = GameManagerBE.getGameID(location, teamB, teamB, teamBGoals);
+            String gameID = GameManagerBE.getGameID(location, teamB, teamB, teamBGoals,teamAGoals);
 
             //// This is to get the goal scorers(add is to stats)
             String goalfullName1 = (String) GoalScorerCombo1.getSelectedItem();

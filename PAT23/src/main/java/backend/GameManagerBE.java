@@ -18,7 +18,7 @@ public class GameManagerBE {
     public static void addGame(String location, String RHbTeam, String OpponentTeam,int RhbTeamScore, int OpponentScore) throws ClassNotFoundException, SQLException {
 
         DB database = new DB();
-        database.update("INSERT INTO Results(Location,TeamA,TeamB,TeamAGoals,TeamBGoals) VALUES('" + location + "','" + RHbTeam + "','" + OpponentTeam + "','"+ RhbTeamScore + "','"  + OpponentScore + "');");
+        database.update("INSERT INTO Results(TeamA,TeamB,Location,TeamAGoals,TeamBGoals) VALUES('" + RHbTeam + "','" + OpponentTeam + "','"+ location + "','" + RhbTeamScore + "','"  + OpponentScore + "');");
 
     }
 
@@ -49,9 +49,9 @@ public class GameManagerBE {
 
     }
 
-    public static String getGameID(String location, String RHbTeam, String OpponentTeam, int OpponentScore) throws ClassNotFoundException, SQLException {
+    public static String getGameID(String location, String RHbTeam, String OpponentTeam, int OpponentScore,int RhbScore) throws ClassNotFoundException, SQLException {
         DB database = new DB();
-        ResultSet getGameID = database.query("SELECT GameID FROM Game WHERE Location = " + location + "TeamA = " + RHbTeam + "TeamB = " + OpponentTeam + "TeamBGoals = " + OpponentScore + ";");
+        ResultSet getGameID = database.query("SELECT GameID FROM Results WHERE Location = " + location + " AND TeamA = " + RHbTeam + " AND TeamB = " + OpponentTeam + " AND TeamBGoals = " + OpponentScore + " AND TeamAGoals = " + RhbScore  +";");
         return DB.toString(getGameID);
     }
 }
