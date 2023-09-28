@@ -72,7 +72,7 @@ public class PlayerManagerBE {
     // gets players stats that are needed
     public static String getPlayerGoals(String playerID) throws ClassNotFoundException, SQLException{
         DB databse = new DB();
-        ResultSet getGoals = databse.query("SELECT SUM(Goals) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
+        ResultSet getGoals = databse.query("SELECT ROUND(SUM(Goals)) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
       
         if(getGoals.equals("")){
             return "0";
@@ -85,7 +85,7 @@ public class PlayerManagerBE {
     
     public static String getPlayerAssists(String playerID) throws ClassNotFoundException, SQLException{
         DB databse = new DB();
-        ResultSet getAssists = databse.query("SELECT SUM(Assists) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
+        ResultSet getAssists = databse.query("SELECT ROUND(SUM(Assists)) FROM Stats WHERE Stats.PlayerID = '"+playerID+"';");
       
         if(getAssists.equals("")){
             return "0";
@@ -134,7 +134,7 @@ public class PlayerManagerBE {
 
             return "70";
         }else{
-            return DB.toString(getOvr);
+            return ovr;
         }
 
 
