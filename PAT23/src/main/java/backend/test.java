@@ -25,5 +25,11 @@ public class test {
           
           String playerID = PlayerManagerBE.getPlayerID("Gajendra", "Naidoo");
           System.out.println( PlayerManagerBE.calcOVR("1"));
+          
+          String[] players = GameManagerBE.getPlayerContribs("10");
+          for (int i = 0; i < players.length; i++) {
+              System.out.println(players[i].replace("null", ""));;
+            
+        }
     }
 }

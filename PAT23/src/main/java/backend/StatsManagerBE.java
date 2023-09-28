@@ -22,13 +22,8 @@ public class StatsManagerBE {
         
     }
     
-     public static String getRHBGoals(String teamID) throws ClassNotFoundException, SQLException{
-        DB database = new DB();
-        ResultSet getGoals = database.query("SELECT SUM(TeamAGoals) FROM Results;");
-        return DB.toString(getGoals).replace("#", "");        
-    }
      
-     public static String getWins(String teamName) throws ClassNotFoundException, SQLException{
+    public static String getWins(String teamName) throws ClassNotFoundException, SQLException{
     
         DB database = new DB();
         ResultSet getGoals = database.query("SELECT DISTINCT COUNT(*)FROM gajendranDB.Stats,Results WHERE Results.TeamA = '"+teamName+"' AND Stats.GameID = Results.GameID AND TeamAGoals > TeamBGoals GROUP BY Results.GameID ;");
@@ -76,10 +71,7 @@ public class StatsManagerBE {
     }
     
     
-    
-    
-    
-    ///////// PLAYER STAT CALCULATIONS///////////////////////////
+    ///////// TEAM PLAYER STAT CALCULATIONS///////////////////////////
     public static String getTopG(String teamName) throws ClassNotFoundException, SQLException {
       
         DB database = new DB();
@@ -91,7 +83,7 @@ public class StatsManagerBE {
                 + "	WHERE Teams.name = '"+teamName+"'\n"
                 + "	AND TeamPlayer.TeamID =Teams.TeamID\n"
                 + ")\n"
-                + "AND Players.PlayerID = Stats.PlayerID\n"
+                + "AND Players.PlayerID = Stats.PlayerID\n" 
                 + "AND Stats.GameID IN (\n"
                 + "	SELECT GameID\n"
                 + "	FROM gajendranDB.Results,Teams\n"
