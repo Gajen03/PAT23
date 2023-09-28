@@ -29,7 +29,7 @@ public class PlayerManager extends javax.swing.JFrame {
         updatePlayers();
 
         // fills position combo
-        String[] positions = {"ST", "GK", "CB", "CM"};
+        String[] positions = {"CF","LW","RW","ST", "GK", "CM","CAM","CDM", "CB","RB","LB"};
         DefaultComboBoxModel posmodel = new DefaultComboBoxModel();
         for (int i = 0; i < positions.length; i++) {
             posmodel.addElement(positions[i]);
@@ -46,7 +46,7 @@ public class PlayerManager extends javax.swing.JFrame {
 
         // fills kitnumber combo
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 0; i < PlayerManagerBE.getAllPlayers().length; i++) {
+        for (int i = 1; i <= 30; i++) {
             model.addElement(i);
         }
         kitNumCombo.setModel(model);
