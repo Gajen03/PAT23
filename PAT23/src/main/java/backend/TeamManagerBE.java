@@ -103,8 +103,7 @@ public class TeamManagerBE {
         
 
         ResultSet countQueryTeamPlayer = database.query("SELECT COUNT(*) FROM Players, TeamPlayer, Teams WHERE (Teams.TeamID=TeamPlayer.TeamID AND TeamPlayer.PlayerID = Players.PlayerID) AND (Teams.Name = \'"+teamName+"\');");
-//        countQueryTeamPlayer.next();
-//        int numRows = countQueryTeamPlayer.getInt(1);
+
 
 
         ResultSet dbData = database.query("SELECT Players.Name , Players.Surname ,Position,KitNumber FROM Players, TeamPlayer, Teams WHERE (Teams.TeamID=TeamPlayer.TeamID AND TeamPlayer.PlayerID = Players.PlayerID) AND (Teams.Name = \'"+teamName+"\');");
