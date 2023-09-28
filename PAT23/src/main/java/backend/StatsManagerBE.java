@@ -28,25 +28,51 @@ public class StatsManagerBE {
         return DB.toString(getGoals).replace("#", "");        
     }
      
-     public static String getWins(String teamID) throws ClassNotFoundException, SQLException{
-        String teamName = TeamManagerBE.getTeamName(teamID);
+     public static String getWins(String teamName) throws ClassNotFoundException, SQLException{
+    
         DB database = new DB();
         ResultSet getGoals = database.query("SELECT DISTINCT COUNT(*)FROM gajendranDB.Stats,Results WHERE Results.TeamA = '"+teamName+"' AND Stats.GameID = Results.GameID AND TeamAGoals > TeamBGoals GROUP BY Results.GameID ;");
-        return DB.toString(getGoals).replace("#", "");        
+        String wins = DB.toString(getGoals).replace("#", "");
+        if(wins.contains("null")){
+            return "0";
+        }else{
+            return wins;
+        }       
     }
      
-    public static String getLosses(String teamID) throws ClassNotFoundException, SQLException{
-        String teamName = TeamManagerBE.getTeamName(teamID);
+    public static String getLosses(String teamName) throws ClassNotFoundException, SQLException{
         DB database = new DB();
         ResultSet getGoals = database.query("SELECT DISTINCT COUNT(*)FROM gajendranDB.Stats,Results WHERE Results.TeamA = '"+teamName+"' AND Stats.GameID = Results.GameID AND TeamAGoals < TeamBGoals GROUP BY Results.GameID ;");
-        return DB.toString(getGoals).replace("#", "");        
+        String losses = DB.toString(getGoals).replace("#", "");
+        if(losses.contains("null")){
+            return "0";
+        }else{
+            return losses;
+        }     
     }
     
-    public static String getDraws(String teamID) throws ClassNotFoundException, SQLException{
-        String teamName = TeamManagerBE.getTeamName(teamID);
+    public static String getDraws(String teamName) throws ClassNotFoundException, SQLException{
+       
         DB database = new DB();
         ResultSet getGoals = database.query("SELECT DISTINCT COUNT(*)FROM gajendranDB.Stats,Results WHERE Results.TeamA = '"+teamName+"' AND Stats.GameID = Results.GameID AND TeamAGoals = TeamBGoals GROUP BY Results.GameID ;");
-        return DB.toString(getGoals).replace("#", "");        
+        String draws = DB.toString(getGoals).replace("#", "");
+        if(draws.contains("null")){
+            return "0";
+        }else{
+            return draws;
+        }        
+    }
+    
+    public static String getTeamGoals(String teamName) throws ClassNotFoundException, SQLException{
+        
+        DB database = new DB();
+        ResultSet getGoals = database.query("SELECT (SUM(TeamAGoals)) FROM Results WHERE TeamA = '"+teamName+"' ;");    
+         String teamGoals = DB.toString(getGoals).replace("#", "");
+        if(teamGoals.contains("null")){
+            return "0";
+        }else{
+            return teamGoals;
+        } 
     }
     
     
@@ -54,21 +80,22 @@ public class StatsManagerBE {
     
     
     ///////// PLAYER STAT CALCULATIONS///////////////////////////
-    public static String getTopG(String teamID) throws ClassNotFoundException, SQLException {
+    public static String getTopG(String teamName) throws ClassNotFoundException, SQLException {
+      
         DB database = new DB();
         ResultSet getTopGName = database.query("SELECT Players.name\n"
                 + "FROM gajendranDB.Stats,Players,TeamPlayer\n"
                 + "WHERE TeamPlayer.TeamID = (\n"
                 + "	SELECT DISTINCT TeamPlayer.TeamID\n"
                 + "	FROM gajendranDB.TeamPlayer,Teams\n"
-                + "	WHERE Teams.name = \"RHB Boys 1st\"\n"
+                + "	WHERE Teams.name = '"+teamName+"'\n"
                 + "	AND TeamPlayer.TeamID =Teams.TeamID\n"
                 + ")\n"
                 + "AND Players.PlayerID = Stats.PlayerID\n"
                 + "AND Stats.GameID IN (\n"
                 + "	SELECT GameID\n"
                 + "	FROM gajendranDB.Results,Teams\n"
-                + "	WHERE TeamA = \"RHB Boys 1st\"\n"
+                + "	WHERE TeamA = '"+teamName+"'\n"
                 + "	AND TeamA = Teams.name\n"
                 + ")\n"
                 + "GROUP BY Players.name\n"
@@ -80,14 +107,14 @@ public class StatsManagerBE {
                 + "WHERE TeamPlayer.TeamID = (\n"
                 + "	SELECT DISTINCT TeamPlayer.TeamID\n"
                 + "	FROM gajendranDB.TeamPlayer,Teams\n"
-                + "	WHERE Teams.name = \"RHB Boys 1st\"\n"
+                + "	WHERE Teams.name = '"+teamName+"'\n"
                 + "	AND TeamPlayer.TeamID =Teams.TeamID\n"
                 + ")\n"
                 + "AND Players.PlayerID = Stats.PlayerID\n"
                 + "AND Stats.GameID IN (\n"
                 + "	SELECT GameID\n"
                 + "	FROM gajendranDB.Results,Teams\n"
-                + "	WHERE TeamA = \"RHB Boys 1st\"\n"
+                + "	WHERE TeamA = '"+teamName+"'\n"
                 + "	AND TeamA = Teams.name\n"
                 + ")\n"
                 + "GROUP BY Players.surname\n"
@@ -100,21 +127,23 @@ public class StatsManagerBE {
         return name + " "+surname;
     }
     
-    public static String getTopA(String teamID) throws ClassNotFoundException, SQLException {
+    public static String getTopA(String teamName) throws ClassNotFoundException, SQLException {
+       
+        
         DB database = new DB();
         ResultSet getTopGName = database.query("SELECT Players.name\n"
                 + "FROM gajendranDB.Stats,Players,TeamPlayer\n"
                 + "WHERE TeamPlayer.TeamID = (\n"
                 + "	SELECT DISTINCT TeamPlayer.TeamID\n"
                 + "	FROM gajendranDB.TeamPlayer,Teams\n"
-                + "	WHERE Teams.name = \"RHB Boys 1st\"\n"
+                + "	WHERE Teams.name = '"+teamName+"'\n"
                 + "	AND TeamPlayer.TeamID =Teams.TeamID\n"
                 + ")\n"
                 + "AND Players.PlayerID = Stats.PlayerID\n"
                 + "AND Stats.GameID IN (\n"
                 + "	SELECT GameID\n"
                 + "	FROM gajendranDB.Results,Teams\n"
-                + "	WHERE TeamA = \"RHB Boys 1st\"\n"
+                + "	WHERE TeamA = '"+teamName+"'\n"
                 + "	AND TeamA = Teams.name\n"
                 + ")\n"
                 + "GROUP BY Players.name\n"
@@ -126,14 +155,14 @@ public class StatsManagerBE {
                 + "WHERE TeamPlayer.TeamID = (\n"
                 + "	SELECT DISTINCT TeamPlayer.TeamID\n"
                 + "	FROM gajendranDB.TeamPlayer,Teams\n"
-                + "	WHERE Teams.name = \"RHB Boys 1st\"\n"
+                + "	WHERE Teams.name = '"+teamName+"'\n"
                 + "	AND TeamPlayer.TeamID =Teams.TeamID\n"
                 + ")\n"
                 + "AND Players.PlayerID = Stats.PlayerID\n"
                 + "AND Stats.GameID IN (\n"
                 + "	SELECT GameID\n"
                 + "	FROM gajendranDB.Results,Teams\n"
-                + "	WHERE TeamA = \"RHB Boys 1st\"\n"
+                + "	WHERE TeamA = '"+teamName+"'\n"
                 + "	AND TeamA = Teams.name\n"
                 + ")\n"
                 + "GROUP BY Players.surname\n"
